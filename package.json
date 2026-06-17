@@ -1,0 +1,28 @@
+{
+  "name": "runner",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --loader ts-node/esm main.ts",
+    "listen": "tsc && node dist/listener.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@mysten/sui": "^2.16.2",
+    "@types/node": "^25.8.0",
+    "axios": "^1.16.1",
+    "dotenv": "^17.4.2",
+    "isolated-vm": "^6.1.2",
+    "paillier-bigint": "^3.4.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}

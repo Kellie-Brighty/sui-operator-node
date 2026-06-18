@@ -7,7 +7,7 @@ import { SecurityManager } from './security_manager.js';
  * Executes the provided code in a secure sandbox.
  * @param code The JS code string to execute.
  */
-export async function executeInSandbox(code: string, inputData: string = '{}'): Promise<any> {
+export async function executeInSandbox(code: string, inputData: string = '{}', sealedSecrets: Record<string, string> = {}): Promise<any> {
     // Initialize FHE engine lazily
     await initFHE();
 
@@ -81,9 +81,15 @@ export async function executeInSandbox(code: string, inputData: string = '{}'): 
             };
 
             const proxyPort = process.env.PROXY_PORT || 3000;
+            
+            const fetchHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
+            if (Object.keys(sealedSecrets).length > 0) {
+                fetchHeaders['x-sui-sealed-secrets'] = JSON.stringify(sealedSecrets);
+            }
+            
             const response = await fetch(`http://localhost:${proxyPort}/proxy`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: fetchHeaders,
                 body: JSON.stringify(proxyPayload)
             });
 

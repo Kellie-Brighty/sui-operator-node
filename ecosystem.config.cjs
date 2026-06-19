@@ -5,9 +5,9 @@ module.exports = {
       script: "dist/listener.js",
       interpreter: "/usr/bin/node",
       env: {
-        PACKAGE_ID: "0xfe9cd1bef9db795e548992b00eab6c0f1c5aec675dce7874a4ac85912b5fa480",
-        PROTOCOL_TREASURY_ID: "0xb7f995072f2fe53246c79942b840463297fdc234dde3eb03c5384c342c75cf52",
-        REGISTRY_ID: "0xd7a6c23d49c4af09e378be6778f6df60b3ba29d0b7c4ab055cab311a722c5e2b",
+        PACKAGE_ID: "0x902178dc8aba7dbdfb7a8350ec39bf78fd6ebd6c1a16c1dc142ce1cf5c89bd63",
+        PROTOCOL_TREASURY_ID: "0x9119b43e1b179342300ae61b8065cec58d543c6aedf675143fd0224bfc45a2fa",
+        REGISTRY_ID: "0x0dd6ad0500f3765684acadd5a8ca8338c29669ff34efe78b3cd52d143e8708ed",
         OPERATOR_KEY_PATH: "/root/.sui-functions/node1.json"
       }
     },
@@ -16,9 +16,9 @@ module.exports = {
       script: "dist/listener.js",
       interpreter: "/usr/bin/node",
       env: {
-        PACKAGE_ID: "0xfe9cd1bef9db795e548992b00eab6c0f1c5aec675dce7874a4ac85912b5fa480",
-        PROTOCOL_TREASURY_ID: "0xb7f995072f2fe53246c79942b840463297fdc234dde3eb03c5384c342c75cf52",
-        REGISTRY_ID: "0xd7a6c23d49c4af09e378be6778f6df60b3ba29d0b7c4ab055cab311a722c5e2b",
+        PACKAGE_ID: "0x902178dc8aba7dbdfb7a8350ec39bf78fd6ebd6c1a16c1dc142ce1cf5c89bd63",
+        PROTOCOL_TREASURY_ID: "0x9119b43e1b179342300ae61b8065cec58d543c6aedf675143fd0224bfc45a2fa",
+        REGISTRY_ID: "0x0dd6ad0500f3765684acadd5a8ca8338c29669ff34efe78b3cd52d143e8708ed",
         OPERATOR_KEY_PATH: "/root/.sui-functions/node2.json"
       }
     },
@@ -27,9 +27,9 @@ module.exports = {
       script: "dist/listener.js",
       interpreter: "/usr/bin/node",
       env: {
-        PACKAGE_ID: "0xfe9cd1bef9db795e548992b00eab6c0f1c5aec675dce7874a4ac85912b5fa480",
-        PROTOCOL_TREASURY_ID: "0xb7f995072f2fe53246c79942b840463297fdc234dde3eb03c5384c342c75cf52",
-        REGISTRY_ID: "0xd7a6c23d49c4af09e378be6778f6df60b3ba29d0b7c4ab055cab311a722c5e2b",
+        PACKAGE_ID: "0x902178dc8aba7dbdfb7a8350ec39bf78fd6ebd6c1a16c1dc142ce1cf5c89bd63",
+        PROTOCOL_TREASURY_ID: "0x9119b43e1b179342300ae61b8065cec58d543c6aedf675143fd0224bfc45a2fa",
+        REGISTRY_ID: "0x0dd6ad0500f3765684acadd5a8ca8338c29669ff34efe78b3cd52d143e8708ed",
         OPERATOR_KEY_PATH: "/root/.sui-functions/node3.json"
       }
     },

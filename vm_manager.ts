@@ -42,6 +42,10 @@ export async function executeInSandbox(code: string, inputData: string = '{}', s
     // Inject inputData variable
     await jail.set('rawInputData', JSON.stringify(securedInputData));
 
+    // Global arrays to collect proxy signatures and data during execution
+    const proxySignatures: string[] = [];
+    const proxyApiData: string[] = [];
+
     // 1. Inject console.log mapping
     await jail.set('log', new ivm.Reference(function(...args: any[]) {
         console.log('[VM]', ...args);
@@ -94,6 +98,19 @@ export async function executeInSandbox(code: string, inputData: string = '{}', s
             });
 
             const text = await response.text();
+            
+            // Extract proxy-signed attestation if available
+            try {
+                const parsed = JSON.parse(text);
+                if (parsed.signature && parsed.text) {
+                    proxySignatures.push(parsed.signature);
+                    proxyApiData.push(parsed.text);
+                    return { status: parsed.status, text: parsed.text };
+                }
+            } catch (e) {
+                // If parsing fails, it means proxy didn't sign it (or it's raw text), just proceed
+            }
+            
             return {
                 status: response.status,
                 text: text
@@ -181,7 +198,11 @@ export async function executeInSandbox(code: string, inputData: string = '{}', s
         }
 
         isolate.dispose();
-        return result;
+        return {
+            result: result,
+            proxySignatures: proxySignatures,
+            proxyApiData: proxyApiData
+        };
     } catch (error: any) {
         throw new Error(`Execution failed: ${error.message}`);
     } finally {

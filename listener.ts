@@ -22,9 +22,9 @@ const client = new SuiJsonRpcClient({
     network: 'testnet'
 });
 
-const FALLBACK_PACKAGE_ID = '0xfe9cd1bef9db795e548992b00eab6c0f1c5aec675dce7874a4ac85912b5fa480';
-const FALLBACK_TREASURY_ID = '0xb7f995072f2fe53246c79942b840463297fdc234dde3eb03c5384c342c75cf52';
-const FALLBACK_REGISTRY_ID = '0xd7a6c23d49c4af09e378be6778f6df60b3ba29d0b7c4ab055cab311a722c5e2b';
+const FALLBACK_PACKAGE_ID = '0x902178dc8aba7dbdfb7a8350ec39bf78fd6ebd6c1a16c1dc142ce1cf5c89bd63';
+const FALLBACK_TREASURY_ID = '0x9119b43e1b179342300ae61b8065cec58d543c6aedf675143fd0224bfc45a2fa';
+const FALLBACK_REGISTRY_ID = '0x0dd6ad0500f3765684acadd5a8ca8338c29669ff34efe78b3cd52d143e8708ed';
 
 function getOrGenerateOperatorKey(): Ed25519Keypair | null {
     const configDir = path.join(os.homedir(), '.sui-functions');
@@ -619,8 +619,13 @@ export async function startSuiListener(packageId: string) {
                                     const sealedSecrets = await fetchProjectSecrets(project_id);
 
                                     let executionResult: any;
+                                    let proxySignatures: string[] = [];
+                                    let proxyApiData: string[] = [];
                                     try {
-                                        executionResult = await executeInSandbox(code, input_data, sealedSecrets);
+                                        const res = await executeInSandbox(code, input_data, sealedSecrets);
+                                        executionResult = res.result;
+                                        proxySignatures = res.proxySignatures || [];
+                                        proxyApiData = res.proxyApiData || [];
                                         console.log("Execution Result:", executionResult);
                                     } catch (sandboxErr: any) {
                                         console.error("Sandbox Execution Error:", sandboxErr.message);
@@ -634,6 +639,8 @@ export async function startSuiListener(packageId: string) {
                                         const packageId = process.env.PACKAGE_ID || FALLBACK_PACKAGE_ID;
                                         const treasuryId = process.env.PROTOCOL_TREASURY_ID || FALLBACK_TREASURY_ID;
                                         
+                                        const sigsBytes = proxySignatures.map(sig => Array.from(Buffer.from(sig, 'base64')));
+                                        
                                         tx.moveCall({
                                             target: `${packageId}::trigger::submit_result`,
                                             arguments: [
@@ -641,6 +648,8 @@ export async function startSuiListener(packageId: string) {
                                                 tx.object(treasuryId),
                                                 tx.pure.string(function_name),
                                                 tx.pure.string(JSON.stringify(executionResult) ?? "null"),
+                                                tx.pure.vector('string', proxyApiData),
+                                                tx.pure.vector('vector<u8>', sigsBytes),
                                                 tx.pure.u64(nonce),
                                                 tx.object("0x6") // SUI Clock
                                             ]
